@@ -1,0 +1,14 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #D97706;
+  --color-primary-hover: #B45309;
+}
+
+@layer base {
+    body {
+        background-color: var(--color-gray-50);
+        color: var(--color-gray-900);
+        font-family: 'Inter', sans-serif;
+    }
+}
