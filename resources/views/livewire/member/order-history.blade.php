@@ -50,6 +50,13 @@
                                 </div>
                             </div>
                         </a>
+                        @if($order->status === 'menunggu')
+                            <div class="px-4 pb-4 sm:px-6 flex justify-end">
+                                <button wire:click.prevent="cancelOrder({{ $order->id }})" class="text-sm text-red-600 hover:text-red-800 font-medium px-4 py-2 border border-red-200 rounded-lg hover:bg-red-50 transition-colors">
+                                    Batalkan Pesanan
+                                </button>
+                            </div>
+                        @endif
                     </li>
                 @endforeach
             </ul>

@@ -54,6 +54,10 @@ class OrderForm
         ])
                     ->default('menunggu')
                     ->required(),
+                Textarea::make('customer_notes')
+                    ->label('Catatan Pelanggan')
+                    ->disabled()
+                    ->columnSpanFull(),
                 Textarea::make('admin_notes')
                     ->columnSpanFull(),
             ]);

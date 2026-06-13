@@ -31,6 +31,15 @@ class OrderDetail extends Component
         $this->dispatch('snap-pay', token: $snapToken);
     }
 
+    public function cancelOrder()
+    {
+        if ($this->order->status === 'menunggu') {
+            $this->order->update(['status' => 'dibatalkan']);
+            session()->flash('info', 'Pesanan berhasil dibatalkan.');
+            $this->order->refresh();
+        }
+    }
+
     public function render()
     {
         return view('livewire.member.order-detail')->layout('layouts.app');

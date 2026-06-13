@@ -58,7 +58,13 @@
                 </div>
                 <div>
                     <h4 class="text-sm font-bold uppercase tracking-wider text-gray-500 mb-4">Catatan</h4>
-                    <p class="text-sm text-gray-900 bg-gray-50 p-4 rounded-xl border border-gray-100">{{ $order->notes ?? 'Tidak ada catatan.' }}</p>
+                    <p class="text-sm text-gray-900 bg-gray-50 p-4 rounded-xl border border-gray-100">{{ $order->customer_notes ?? 'Tidak ada catatan.' }}</p>
+                    
+                    <h4 class="text-sm font-bold uppercase tracking-wider text-gray-500 mt-6 mb-4">Informasi Pengambilan</h4>
+                    <div class="bg-primary/5 border border-primary/20 rounded-xl p-4">
+                        <p class="text-sm text-gray-800">Silakan lakukan pengambilan baju adat di alamat toko <strong>Jingga Rent</strong>:</p>
+                        <p class="text-sm text-gray-900 font-semibold mt-1">Jl. Srimenanti No. 123, Pangkalpinang, Bangka Belitung</p>
+                    </div>
                 </div>
             </div>
 
@@ -83,7 +89,10 @@
             </div>
             
             @if($order->status === 'menunggu')
-                <div class="mt-4 flex justify-end">
+                <div class="mt-4 flex justify-between items-center border-t border-gray-100 pt-6">
+                    <button wire:click="cancelOrder" onclick="return confirm('Apakah Anda yakin ingin membatalkan pesanan ini?')" class="text-sm text-red-600 hover:text-red-800 font-medium px-6 py-4 border border-red-200 rounded-xl hover:bg-red-50 transition-colors">
+                        Batalkan Pesanan
+                    </button>
                     <button wire:click="pay" class="px-8 py-4 bg-primary text-white rounded-xl font-bold hover:bg-primary-hover hover:-translate-y-1 shadow-lg transition-all duration-300">
                         Bayar Sekarang (Midtrans)
                     </button>

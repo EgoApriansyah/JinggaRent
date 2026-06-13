@@ -9,9 +9,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 #[Fillable([
-    'order_code', 'user_id', 'costume_id', 'start_date', 'end_date', 
+    'order_code', 'user_id', 'costume_id', 'quantity', 'start_date', 'end_date', 
     'rental_days', 'price_per_day', 'subtotal', 'deposit_amount', 
-    'total_payment', 'status', 'admin_notes'
+    'total_payment', 'status', 'customer_notes', 'admin_notes'
 ])]
 class Order extends Model
 {

@@ -14,6 +14,8 @@ class CostumeDetail extends Component
     public $costume;
     public $start_date;
     public $end_date;
+    public $quantity = 1;
+    public $customer_notes;
     public $days = 0;
     public $subtotal = 0;
     public $deposit = 0;
@@ -21,7 +23,7 @@ class CostumeDetail extends Component
 
     public function mount($slug)
     {
-        $this->costume = Costume::where('slug', $slug)->with(['region', 'images', 'reviews.user'])->firstOrFail();
+        $this->costume = Costume::where('slug', $slug)->with(['region', 'category', 'images', 'reviews.user'])->firstOrFail();
     }
 
     public function updatedStartDate()
@@ -34,6 +36,17 @@ class CostumeDetail extends Component
         $this->calculateTotal();
     }
 
+    public function updatedQuantity()
+    {
+        if ($this->quantity < 1) {
+            $this->quantity = 1;
+        }
+        if ($this->quantity > $this->costume->stock) {
+            $this->quantity = $this->costume->stock;
+        }
+        $this->calculateTotal();
+    }
+
     public function calculateTotal()
     {
         if ($this->start_date && $this->end_date) {
@@ -42,7 +55,7 @@ class CostumeDetail extends Component
             
             if ($end->greaterThanOrEqualTo($start)) {
                 $this->days = $start->diffInDays($end) + 1; // Inclusive
-                $this->subtotal = $this->days * $this->costume->price_per_day;
+                $this->subtotal = $this->days * $this->costume->price_per_day * $this->quantity;
                 $this->deposit = $this->subtotal * 0.5; // 50% deposit
                 $this->total = $this->subtotal + $this->deposit;
             } else {
@@ -63,6 +76,7 @@ class CostumeDetail extends Component
         $this->validate([
             'start_date' => 'required|date|after_or_equal:today',
             'end_date' => 'required|date|after_or_equal:start_date',
+            'quantity' => 'required|integer|min:1|max:' . $this->costume->stock,
         ]);
 
         // Create Order
@@ -70,6 +84,7 @@ class CostumeDetail extends Component
             'order_code' => 'ORD-' . strtoupper(Str::random(8)),
             'user_id' => Auth::id(),
             'costume_id' => $this->costume->id,
+            'quantity' => $this->quantity,
             'start_date' => $this->start_date,
             'end_date' => $this->end_date,
             'rental_days' => $this->days,
@@ -78,6 +93,7 @@ class CostumeDetail extends Component
             'deposit_amount' => $this->deposit,
             'total_payment' => $this->total,
             'status' => 'menunggu',
+            'customer_notes' => $this->customer_notes,
         ]);
 
         // Send notifications
