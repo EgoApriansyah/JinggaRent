@@ -1,6 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\MidtransWebhookController;
+use App\Http\Controllers\PakasirWebhookController;
 
-Route::post('/midtrans/callback', [MidtransWebhookController::class, 'handle']);
+Route::post('/pakasir/webhook', [PakasirWebhookController::class, 'handle']);

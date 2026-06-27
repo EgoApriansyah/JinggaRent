@@ -8,8 +8,10 @@ use Illuminate\Support\Facades\Auth;
 
 use App\Livewire\CostumeDetail;
 use App\Livewire\Member\Profile;
+use App\Livewire\Member\ProfileEdit;
 use App\Livewire\Member\OrderHistory;
 use App\Livewire\Member\OrderDetail;
+use App\Livewire\Admin\IncomingOrders;
 
 Route::get('/', function () {
     return view('welcome');
@@ -25,8 +27,10 @@ Route::middleware('guest')->group(function () {
 
 Route::middleware('auth')->group(function () {
     Route::get('/profil', Profile::class)->name('member.profile');
+    Route::get('/profil/edit', ProfileEdit::class)->name('member.profile.edit');
     Route::get('/pesanan', OrderHistory::class)->name('member.order.history');
     Route::get('/pesanan/{id}', OrderDetail::class)->name('member.order.detail');
+    Route::get('/pesanan-masuk', IncomingOrders::class)->name('admin.incoming.orders');
 });
 
 Route::post('/logout', function () {
@@ -36,4 +40,4 @@ Route::post('/logout', function () {
     return redirect('/');
 })->name('logout');
 
-Route::post('/midtrans/callback', [\App\Http\Controllers\MidtransWebhookController::class, 'handle']);
+

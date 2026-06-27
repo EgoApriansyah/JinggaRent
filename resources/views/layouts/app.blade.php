@@ -27,7 +27,6 @@
         }
     </script>
     
-    <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ config('midtrans.client_key') }}"></script>
     
     @livewireStyles
 </head>
@@ -44,7 +43,11 @@
                         @if(auth()->user()->isAdmin())
                             <a href="/admin" class="text-gray-600 font-medium hover:text-primary transition-colors duration-150">Dashboard Admin</a>
                         @endif
-                        <a href="/pesanan" class="text-gray-600 font-medium hover:text-primary transition-colors duration-150">Pesanan Saya</a>
+                        @if(Auth::user()->role === 'admin')
+                            <a href="/pesanan-masuk" class="text-gray-600 font-medium hover:text-primary transition-colors duration-150">Pesanan Masuk</a>
+                        @else
+                            <a href="/pesanan" class="text-gray-600 font-medium hover:text-primary transition-colors duration-150">Pesanan Saya</a>
+                        @endif
                         <a href="/profil" class="text-gray-600 font-medium hover:text-primary transition-colors duration-150">Profil</a>
                         <form action="/logout" method="POST" class="inline">
                             @csrf

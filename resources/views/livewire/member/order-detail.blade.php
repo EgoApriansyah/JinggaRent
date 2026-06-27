@@ -11,6 +11,16 @@
             {{ session('info') }}
         </div>
     @endif
+    @if (session()->has('success'))
+        <div class="mb-6 p-4 bg-green-50 border border-green-200 text-green-700 rounded-xl">
+            {{ session('success') }}
+        </div>
+    @endif
+    @if (session()->has('error'))
+        <div class="mb-6 p-4 bg-red-50 border border-red-200 text-red-700 rounded-xl">
+            {{ session('error') }}
+        </div>
+    @endif
 
     <div class="bg-white rounded-3xl border border-gray-200 shadow-sm overflow-hidden mb-8">
         <div class="px-6 py-5 border-b border-gray-200 flex justify-between items-center bg-gray-50">
@@ -89,36 +99,23 @@
             </div>
             
             @if($order->status === 'menunggu')
-                <div class="mt-4 flex justify-between items-center border-t border-gray-100 pt-6">
-                    <button wire:click="cancelOrder" onclick="return confirm('Apakah Anda yakin ingin membatalkan pesanan ini?')" class="text-sm text-red-600 hover:text-red-800 font-medium px-6 py-4 border border-red-200 rounded-xl hover:bg-red-50 transition-colors">
+                <div class="mt-4 flex flex-col sm:flex-row justify-between items-center border-t border-gray-100 pt-6 gap-4">
+                    <button wire:click="cancelOrder" onclick="return confirm('Apakah Anda yakin ingin membatalkan pesanan ini?')" class="w-full sm:w-auto text-sm text-red-600 hover:text-red-800 font-medium px-6 py-4 border border-red-200 rounded-xl hover:bg-red-50 transition-colors">
                         Batalkan Pesanan
                     </button>
-                    <button wire:click="pay" class="px-8 py-4 bg-primary text-white rounded-xl font-bold hover:bg-primary-hover hover:-translate-y-1 shadow-lg transition-all duration-300">
-                        Bayar Sekarang (Midtrans)
-                    </button>
+                    <div class="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+                        <button wire:click="checkPaymentStatus" class="w-full sm:w-auto px-6 py-4 bg-white text-gray-700 border border-gray-300 rounded-xl font-bold hover:bg-gray-50 hover:-translate-y-1 shadow-sm transition-all duration-300">
+                            <span wire:loading.remove wire:target="checkPaymentStatus">Cek Status Bayar</span>
+                            <span wire:loading wire:target="checkPaymentStatus">Mengecek...</span>
+                        </button>
+                        <button wire:click="pay" class="w-full sm:w-auto px-8 py-4 bg-primary text-white rounded-xl font-bold hover:bg-primary-hover hover:-translate-y-1 shadow-lg transition-all duration-300">
+                            Bayar Sekarang (QRIS)
+                        </button>
+                    </div>
                 </div>
             @endif
         </div>
     </div>
 </div>
 
-@script
-<script>
-    $wire.on('snap-pay', ({ token }) => {
-        snap.pay(token, {
-            onSuccess: function(result){
-                window.location.reload();
-            },
-            onPending: function(result){
-                alert("Menunggu pembayaran Anda!");
-            },
-            onError: function(result){
-                alert("Pembayaran gagal!");
-            },
-            onClose: function(){
-                // Popup closed
-            }
-        });
-    });
-</script>
-@endscript
+

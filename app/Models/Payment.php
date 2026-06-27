@@ -2,19 +2,27 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-#[Fillable([
-    'order_id', 'midtrans_transaction_id', 'midtrans_order_id', 'payment_type',
-    'gross_amount', 'status', 'snap_token', 'snap_url', 'midtrans_response',
-    'paid_at', 'expired_at'
-])]
 class Payment extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'order_id',
+        'gateway_transaction_id',
+        'gateway_order_id',
+        'payment_type',
+        'gross_amount',
+        'status',
+        'snap_token',
+        'snap_url',
+        'gateway_response',
+        'paid_at',
+        'expired_at',
+    ];
 
     protected function casts(): array
     {
